@@ -1,0 +1,18 @@
+                                                                                                                                     │http_port: 80
+version: '3'
+
+services:
+  seafile:
+    image: seafileltd/seafile:latest
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - /opt/data/seafile:/shared
+    environment:
+      - SEAFILE_SERVER_HOSTNAME=file.serubin.net
+      - SEAFILE_ADMIN_EMAIL=admin@serubin.net
+    env_file:
+      - seafile.env
+
+
