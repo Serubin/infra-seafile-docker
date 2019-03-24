@@ -1,12 +1,11 @@
-                                                                                                                                     │http_port: 80
+# vim: ts=2:sts=2:sw=2:expandtab
+
 version: '3'
 
 services:
   seafile:
     image: seafileltd/seafile:latest
     restart: always
-    ports:
-      - 80:80
     volumes:
       - /opt/data/seafile:/shared
     environment:
@@ -14,5 +13,36 @@ services:
       - SEAFILE_ADMIN_EMAIL=admin@serubin.net
     env_file:
       - seafile.env
+    networks:
+      - traefik
+      - default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.domain=files.serubin.net"
+      - "traefik.frontend.rule=Host: files.serubin.net"
+      - "traefik.docker.network=traefik"
+      - "traefik.port=80"
+      - "traefik.default.protocol=http"
 
+  onlyoffice:
+    image: onlyoffice/documentserver
+    restart: always
+    volumes:
+      - /opt/data/onlyoffice/logs:/var/log/onlyoffice
+      - /opt/data/onlyoffice/data:/var/www/onlyoffice/Data
+      - /opt/data/onlyoffice/lib:/var/lib/onlyoffice
+      - /opt/data/onlyoffice/db:/var/lib/postgresql
+    networks:
+      - traefik
+      - default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.domain=files.serubin.net"
+      - "traefik.frontend.rule=Host: files.serubin.net; PathPrefixStrip: /docs"
+      - "traefik.docker.network=traefik"
+      - "traefik.port=80"
+      - "traefik.default.protocol=http"
 
+networks:
+  traefik:
+    external: true
