@@ -4,7 +4,7 @@ version: '3'
 
 services:
   seafile:
-    image: seafileltd/seafile:latest
+    image: docker.seadrive.org/seafileltd/seafile-pro
     restart: always
     volumes:
       - /opt/data/seafile:/shared
@@ -37,8 +37,8 @@ services:
       - default
     labels:
       - "traefik.enable=true"
-      - "traefik.domain=files.serubin.net"
-      - "traefik.frontend.rule=Host: files.serubin.net; PathPrefixStrip: /docs"
+      - "traefik.domain=docs.serubin.net"
+      - "traefik.frontend.rule=Host: docs.serubin.net"
       - "traefik.docker.network=traefik"
       - "traefik.port=80"
       - "traefik.default.protocol=http"
