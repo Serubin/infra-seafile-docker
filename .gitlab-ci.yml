@@ -1,0 +1,33 @@
+image: tiangolo/docker-with-compose
+
+before_script:
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  - docker login docker.seadrive.org -u seafile -p $SEAFILE_REG_PASSWD
+
+stages:
+  - build
+  - deploy
+
+build-prod:
+  tags:
+    - docker
+  stage: build
+  script:
+    - docker-compose build
+  only:
+    - master
+
+deploy-prod:
+  tags:
+    - docker
+    - swarm
+  stage: deploy
+  script:
+    - docker stack deploy -c docker-compose.yml --with-registry-auth $(echo $CI_PROJECT_NAME | sed 's/-docker//')
+  environment:
+    name: production
+    url: https://files.serubin.net
+
+  only:
+    - master
+
