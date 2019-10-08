@@ -23,7 +23,8 @@ services:
       - "traefik.enable=true"
       - "traefik.domain=files.serubin.net"
       - "traefik.frontend.rule=Host: files.serubin.net"
-      - "traefik.docker.network=traefik"
+      - "traefik.tags=traefik-public"
+      - "traefik.docker.network=traefik-public"
       - "traefik.port=80"
       - "traefik.default.protocol=http"
 
@@ -46,7 +47,8 @@ services:
       - "traefik.enable=true"
       - "traefik.domain=docs.serubin.net"
       - "traefik.frontend.rule=Host: docs.serubin.net"
-      - "traefik.docker.network=traefik"
+      - "traefik.tags=traefik-public"
+      - "traefik.docker.network=traefik-public"
       - "traefik.port=80"
       - "traefik.default.protocol=http"
 
