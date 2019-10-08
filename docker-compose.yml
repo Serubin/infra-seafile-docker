@@ -4,18 +4,21 @@ version: '3'
 
 services:
   seafile:
-    image: docker.seadrive.org/seafileltd/seafile-pro
+    image: docker.seadrive.org/seafileltd/seafile-pro:6.3.13
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
     restart: always
     volumes:
       - /opt/data/seafile:/shared
     environment:
       - SEAFILE_SERVER_HOSTNAME=file.serubin.net
-      - SEAFILE_ADMIN_EMAIL=admin@serubin.net
-    env_file:
-      - seafile.env
+      - SEAFILE_ADMIN_EMAIL=$SEAFILE_ADMIN_EMAIL
+      - SEAFILE_ADMIN_PASSWORD=$SEAFILE_ADMIN_PASSWORD
     networks:
-      - traefik
       - default
+      - traefik-public
     labels:
       - "traefik.enable=true"
       - "traefik.domain=files.serubin.net"
@@ -26,6 +29,10 @@ services:
 
   onlyoffice:
     image: onlyoffice/documentserver
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
     restart: always
     volumes:
       - /opt/data/onlyoffice/logs:/var/log/onlyoffice
@@ -33,8 +40,8 @@ services:
       - /opt/data/onlyoffice/lib:/var/lib/onlyoffice
       - /opt/data/onlyoffice/db:/var/lib/postgresql
     networks:
-      - traefik
       - default
+      - traefik-public
     labels:
       - "traefik.enable=true"
       - "traefik.domain=docs.serubin.net"
@@ -44,5 +51,5 @@ services:
       - "traefik.default.protocol=http"
 
 networks:
-  traefik:
+  traefik-public:
     external: true
