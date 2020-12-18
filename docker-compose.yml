@@ -32,7 +32,7 @@ services:
       - default
 
   seafile:
-    image: docker.seadrive.org/seafileltd/seafile-pro-mc:7.0.13
+    image: docker.seadrive.org/seafileltd/seafile-pro-mc:latest
     container_name: seafile
     deploy:
       replicas: 1
